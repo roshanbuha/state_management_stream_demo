@@ -101,9 +101,10 @@ class _HomePageState extends State<HomePage> {
                 StreamBuilder(
                   stream: TodoHelper().todoListStream,
                   builder: (context, snapshot) {
-                    if (snapshot.data == 10) {
+                    if (snapshot.data == 2) {
                       controller.play();
                       changeColor();
+                      TodoHelper().removeCount();
                     }
                     return Text("counter ${snapshot.data}");
                   },
