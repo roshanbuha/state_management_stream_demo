@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:state_management_stream_demo/helper/color_helper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,54 +20,88 @@ class _HomePageState extends State<HomePage> {
     Colors.yellowAccent,
     Colors.brown,
     Colors.tealAccent,
-    Colors.redAccent,
     Colors.purpleAccent,
-    Colors.pinkAccent,
-    Colors.orangeAccent,
-    Colors.indigo,
     Colors.teal,
-    Colors.purple,
-    Colors.lightGreen,
+    Colors.black12,
+    Colors.blueGrey,
   ];
   int counter = 0;
+  late Color selectColor;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    changeColor();
+    super.initState();
+  }
+
+  void changeColor() {
+    selectColor = colors[Random().nextInt(12)];
+    setState(() {});
+  }
+
+  void colorTap(Color color) {
+    if (selectColor.value == color.value) {
+      TodoHelper().incrementCount();
+      setState(() {});
+    } else {
+      TodoHelper().removeCount();
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Demo"),
       ),
-      body: GridView.builder(
-        itemCount: 40,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemBuilder: (BuildContext context, int index) {
-          Color color = colors[Random().nextInt(12)];
-          return InkWell(
-            onTap: () {},
-            child: Card(
-              color: color,
+      body: Column(
+        children: [
+          Expanded(
+            flex: 7,
+            child: GridView.builder(
+              itemCount: 20,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                Color color = colors[Random().nextInt(12)];
+                return InkWell(
+                  onTap: () {
+                    colorTap(color);
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    color: color,
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 15, top: 10),
-        child: Stack(
-          children: [
-            Row(
+          ),
+          Expanded(
+            flex: 2,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   height: 100,
                   width: 100,
-                  color: Colors.red,
+                  color: selectColor,
                 ),
-                Text(
-                  "$counter",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                StreamBuilder(
+                  stream: TodoHelper().todoListStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData == 2) {
+                      const Text("roshan");
+                      setState(() {});
+                    }
+                    return Text("counter ${snapshot.data}");
+                  },
                 ),
                 SizedBox(
                   width: 150,
@@ -86,8 +121,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,28 +1,20 @@
 class TodoModel {
   TodoModel({
-    this.title,
-    this.subtitle,
-    this.isHighPriority,
-    this.date,
+    this.count,
+    this.color,
   });
 
   TodoModel.fromJson(dynamic json) {
-    title = json['title'];
-    subtitle = json['subtitle'];
-    isHighPriority = json['isHighPriority'];
-    date = json['date'];
+    count = json['count'];
+    color = json['color'];
   }
-  String? title;
-  String? subtitle;
-  bool? isHighPriority;
-  DateTime? date;
+  String? count;
+  List? color;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['title'] = title;
-    map['subtitle'] = subtitle;
-    map['isHighPriority'] = isHighPriority;
-    map['date'] = date;
+    map['count'] = count;
+    map['color'] = color;
     return map;
   }
 }

@@ -10,14 +10,24 @@ class TodoHelper {
 
   final todoListStream = BehaviorSubject<int>.seeded(0);
 
+  Stream<int> get idStream => todoListStream.stream;
+
   void incrementCount() {
     todoListStream.add(todoListStream.value + 1);
   }
 
-  // void addTodo(TodoModel model) {
-  //   List<TodoModel> todoList = todoListStream.value;
-  //   todoList.add(model);
-  //
-  //   todoListStream.sink.add(todoList);
-  // }
+  void removeCount() {
+    todoListStream.value = 0;
+  }
+
+  void dispose() {
+    todoListStream.close();
+  }
+
+// void addTodo(TodoModel model) {
+//   List<TodoModel> todoList = todoListStream.value;
+//   todoList.add(model);
+//
+//   todoListStream.sink.add(todoList);
+// }
 }
