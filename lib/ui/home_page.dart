@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:state_management_stream_demo/helper/color_helper.dart';
 
@@ -27,17 +28,20 @@ class _HomePageState extends State<HomePage> {
   ];
   int counter = 0;
   late Color selectColor;
+  late ConfettiController controller;
 
   @override
   void initState() {
     // TODO: implement initState
     changeColor();
+    controller = ConfettiController(
+      duration: const Duration(seconds: 2),
+    );
     super.initState();
   }
 
   void changeColor() {
     selectColor = colors[Random().nextInt(12)];
-    setState(() {});
   }
 
   void colorTap(Color color) {
@@ -46,6 +50,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     } else {
       TodoHelper().removeCount();
+      changeColor();
       setState(() {});
     }
   }
@@ -72,7 +77,6 @@ class _HomePageState extends State<HomePage> {
                 return InkWell(
                   onTap: () {
                     colorTap(color);
-                    setState(() {});
                   },
                   child: Container(
                     width: 50,
@@ -83,10 +87,11 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
+          animationButton(),
           Expanded(
             flex: 2,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   height: 100,
@@ -96,9 +101,9 @@ class _HomePageState extends State<HomePage> {
                 StreamBuilder(
                   stream: TodoHelper().todoListStream,
                   builder: (context, snapshot) {
-                    if (snapshot.hasData == 2) {
-                      const Text("roshan");
-                      setState(() {});
+                    if (snapshot.data == 10) {
+                      controller.play();
+                      changeColor();
                     }
                     return Text("counter ${snapshot.data}");
                   },
@@ -108,7 +113,11 @@ class _HomePageState extends State<HomePage> {
                   height: 50,
                   child: MaterialButton(
                     color: Colors.black,
-                    onPressed: () {},
+                    onPressed: () {
+                      TodoHelper().removeCount();
+                      changeColor();
+                      setState(() {});
+                    },
                     child: const Text(
                       "Reset",
                       style: TextStyle(
@@ -122,6 +131,27 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget animationButton() {
+    return Align(
+      alignment: Alignment.center,
+      child: ConfettiWidget(
+        blastDirectionality: BlastDirectionality.explosive,
+        confettiController: controller,
+        particleDrag: 0.05,
+        emissionFrequency: 0.05,
+        numberOfParticles: 25,
+        gravity: 0.05,
+        shouldLoop: false,
+        colors: const [
+          Colors.green,
+          Colors.red,
+          Colors.yellow,
+          Colors.blue,
         ],
       ),
     );
