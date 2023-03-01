@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
+          animationButton(),
           Expanded(
             flex: 7,
             child: GridView.builder(
@@ -134,6 +135,40 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          elevation: 5,
+          title: Center(
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: const TextSpan(
+                text: "Congratulations",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: "you won 2 points",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
