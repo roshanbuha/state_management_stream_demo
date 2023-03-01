@@ -152,6 +152,8 @@ class _HomePageState extends State<HomePage> {
           Colors.green,
           Colors.red,
           Colors.yellow,
+          Colors.black,
+          Colors.pink,
           Colors.blue,
         ],
       ),
