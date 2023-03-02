@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_awesome_alert_box/flutter_awesome_alert_box.dart';
 import 'package:state_management_stream_demo/helper/color_helper.dart';
 
 class HomePage extends StatefulWidget {
@@ -105,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                     if (snapshot.data == 2) {
                       controller.play();
                       changeColor();
+                      // SuccessAlertBox(context: context);
                       TodoHelper().removeCount();
                     }
                     return Text("counter ${snapshot.data}");
